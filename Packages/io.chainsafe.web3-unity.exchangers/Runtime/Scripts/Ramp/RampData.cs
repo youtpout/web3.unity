@@ -23,6 +23,31 @@ namespace ChainSafe.Gaming.Exchangers
         [field: SerializeField] public string HostApiKey { get; private set; }
         [field: SerializeField] public string OfframpWebHookV3Url { get; private set; }
         [field: SerializeField] public bool UseSendCryptoCallbackVersion { get; private set; }
+        
+        public static implicit operator RampConfiguration(RampData data)
+        {
+            return new RampConfiguration(
+                data.SwapAsset, 
+                data.OfframpAsset, 
+                data.SwapAmount,
+                data.FiatCurrency,
+                data.FiatValue,
+                data.UserAddress,
+                data.HostLogoUrl,
+                data.HostAppName,
+                data.UserEmailAddress,
+                data.SelectedCountryCode,
+                data.DefaultAsset,
+                data.Url,
+                data.WebhookStatusUrl,
+                data.FinalUrl,
+                data.ContainerNode,
+                data.HostApiKey,
+                data.OfframpWebHookV3Url,
+                data.UseSendCryptoCallbackVersion
+            );
+        }
+
 
     }
 

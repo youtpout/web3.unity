@@ -3,11 +3,9 @@ using System;
 using System.Runtime.InteropServices;
 using AOT;
 
-
-
+#if UNITY_IOS
 namespace ChainSafe.Gaming.Exchangers
 {
-    #if UNITY_IOS
     public class RampExchangeriOS : RampExchanger
     {
         public RampExchangeriOS(RampData rampData) : base(rampData)
@@ -15,6 +13,49 @@ namespace ChainSafe.Gaming.Exchangers
             setOnRampPurchase(SetOnRampPurchase);
             setOffRampSale(SetOffRampSale);
         }
+
+        #region Callbacks
+
+        protected delegate void OnRampPurchaseCallback(double appliedFee,                
+            string? assetAddress,             
+            int assetDecimals,                
+            string assetName,                 
+            string assetSymbol,               
+            string assetType,                 
+            double assetExchangeRate,         
+            double baseRampFee,               
+            string createdAt,                 
+            string cryptoAmount,              
+            string? endTime,                  
+            string? escrowAddress,            
+            string? escrowDetailsHash,        
+            string fiatCurrency,              
+            double fiatValue,                 
+            string? finalTxHash,              
+            string id,                        
+            double networkFee,                
+            string paymentMethodType,         
+            string receiverAddress,           
+            string status,                    
+            string updatedAt                  
+        );
+
+        protected delegate void OffRampSaleCallback(
+            string createdAt,         
+            string cryptoAmount,      
+            string cryptoAssetAddress, 
+            string cryptoAssetChain,   
+            int cryptoAssetDecimals,   
+            string cryptoAssetName,    
+            string cryptoAssetSymbol,  
+            string cryptoAssetType,    
+            double fiatAmount,         
+            string fiatCurrencySymbol, 
+            Guid id                    
+        );
+
+        #endregion
+        
 
         [DllImport("__Internal")]
         private static extern void setOnRampPurchase(OnRampPurchaseCallback callback);
@@ -95,6 +136,5 @@ namespace ChainSafe.Gaming.Exchangers
                 _rampData.ContainerNode, _rampData.HostApiKey, _rampData.UseSendCryptoCallbackVersion ? 1 : 0);
         }
     }
-#endif
 }
-
+#endif

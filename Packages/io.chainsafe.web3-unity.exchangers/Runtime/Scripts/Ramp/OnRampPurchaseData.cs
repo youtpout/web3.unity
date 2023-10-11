@@ -1,6 +1,6 @@
 namespace ChainSafe.Gaming.Exchangers
 {
-    public struct OnRampPurchaseData
+    public class OnRampPurchaseData
     {
         public double AppliedFee { get; set; }
         public AssetInfo Asset { get; set; }

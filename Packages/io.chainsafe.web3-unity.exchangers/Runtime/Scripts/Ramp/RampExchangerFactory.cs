@@ -6,6 +6,8 @@ namespace ChainSafe.Gaming.Exchangers
         {
             #if UNITY_IOS
             return new RampExchangeriOS(rampData);
+            #elif UNITY_ANDROID
+            return new RampExchangerAndroid(rampData);
             #endif
             return null;
         }
