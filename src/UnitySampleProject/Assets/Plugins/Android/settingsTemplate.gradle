@@ -5,7 +5,6 @@ pluginManagement {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
-
     }
 }
 
@@ -18,9 +17,9 @@ dependencyResolutionManagement {
         **ARTIFACTORYREPOSITORY**
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
         flatDir {
             dirs "${project(':unityLibrary').projectDir}/libs"
         }
-        maven { url 'https://jitpack.io' }
     }
 }

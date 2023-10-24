@@ -1,14 +1,13 @@
-
 using UnityEngine;
 
 namespace ChainSafe.Gaming.Exchangers
 {
     public class RampExchangerAndroid : RampExchanger
     {
-        private AndroidJavaClass _unityClass;
-        private AndroidJavaObject _unityActivity;
-        private AndroidJavaObject _pluginInstance;
-        
+        private readonly AndroidJavaObject _pluginInstance;
+        private readonly AndroidJavaObject _unityActivity;
+        private readonly AndroidJavaClass _unityClass;
+
         public RampExchangerAndroid(RampData rampData) : base(rampData)
         {
             _unityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
@@ -20,102 +19,113 @@ namespace ChainSafe.Gaming.Exchangers
 
         public override void OpenRamp()
         {
-            _pluginInstance.Call("startRamp", (RampConfiguration)_rampData);
+            var flowClass = new AndroidJavaClass("network.ramp.sdk.facade.Flow");
+            var onrampFlow = flowClass.GetStatic<AndroidJavaObject>("ONRAMP");
+            var configObject = new AndroidJavaObject("network.ramp.sdk.facade.Config",
+                _rampData.HostAppName,
+                _rampData.HostLogoUrl,
+                _rampData.Url,
+                _rampData.SwapAsset,
+                _rampData.OfframpAsset,
+                _rampData.SwapAmount,
+                _rampData.FiatCurrency,
+                _rampData.FiatValue,
+                _rampData.UserAddress,
+                _rampData.UserEmailAddress,
+                _rampData.SelectedCountryCode,
+                _rampData.DefaultAsset,
+                _rampData.WebhookStatusUrl,
+                _rampData.HostApiKey,
+                onrampFlow, // Assuming the default flow is ONRAMP
+                new AndroidJavaObject(
+                    "java.util.HashSet"), // Empty set for 'enabledFlows' for simplicity; adjust if needed
+                _rampData.OfframpWebHookV3Url,
+                null, // Assuming `UseSendCryptoCallbackVersion` is nullable bool
+                null);
+            _pluginInstance.Call("startRamp", configObject);
         }
     }
-    
+
     public class RampUnityBridge : AndroidJavaProxy
     {
-        public RampUnityBridge() : base("io.chainsafe.web3.exchangers.ramp.RampUnityBridge") { }
+        public RampUnityBridge() : base("io.chainsafe.web3.exchangers.ramp.RampUnityBridge")
+        {
+        }
 
-        void offrampSendCrypto(OfframpAssetInfo asset, string s, string s1)
+        private void offrampSendCrypto(OfframpAssetInfo asset, string s, string s1)
         {
             Debug.LogError("OFF RAMP SENT CRYPTO");
         }
 
-        void onOffRampSaleCreated(OffRampSaleData offrampSale, string s, string s1)
+        private void onOffRampSaleCreated(OffRampSaleData offrampSale, string s, string s1)
         {
             Debug.LogError("OFF RAMP SALE");
-
         }
 
-        void onPurchaseCreated(OnRampPurchaseData purchase, string s, string s1)
+        private void onPurchaseCreated(OnRampPurchaseData purchase, string s, string s1)
         {
             Debug.LogError("OFF RAMP PURCHASE CREATED!!!!");
-
         }
 
-        void onPurchaseFailed()
+        private void onPurchaseFailed()
         {
-            
         }
 
-        void onWidgetClose()
+        private void onWidgetClose()
         {
-            
         }
     }
-    
+
+
     public class RampConfiguration
-{
-    public readonly string SwapAsset;
-    public readonly string OfframpAsset;
-    public readonly string SwapAmount;
-    public readonly string FiatCurrency;
-    public readonly string FiatValue;
-    public readonly string UserAddress;
-    public readonly string HostLogoUrl;
-    public readonly string HostAppName;
-    public readonly string UserEmailAddress;
-    public readonly string SelectedCountryCode;
-    public readonly string DefaultAsset;
-    public readonly string Url;
-    public readonly string WebhookStatusUrl;
-    public readonly string FinalUrl;
-    public readonly string ContainerNode;
-    public readonly string HostApiKey;
-    public readonly string OfframpWebHookV3Url;
-    public readonly bool UseSendCryptoCallbackVersion;
-
-    public RampConfiguration(
-        string swapAsset, 
-        string offrampAsset, 
-        string swapAmount,
-        string fiatCurrency,
-        string fiatValue,
-        string userAddress,
-        string hostLogoUrl,
-        string hostAppName,
-        string userEmailAddress,
-        string selectedCountryCode,
-        string defaultAsset,
-        string url,
-        string webhookStatusUrl,
-        string finalUrl,
-        string containerNode,
-        string hostApiKey,
-        string offrampWebHookV3Url,
-        bool useSendCryptoCallbackVersion)
     {
-        SwapAsset = swapAsset;
-        OfframpAsset = offrampAsset;
-        SwapAmount = swapAmount;
-        FiatCurrency = fiatCurrency;
-        FiatValue = fiatValue;
-        UserAddress = userAddress;
-        HostLogoUrl = hostLogoUrl;
-        HostAppName = hostAppName;
-        UserEmailAddress = userEmailAddress;
-        SelectedCountryCode = selectedCountryCode;
-        DefaultAsset = defaultAsset;
-        Url = url;
-        WebhookStatusUrl = webhookStatusUrl;
-        FinalUrl = finalUrl;
-        ContainerNode = containerNode;
-        HostApiKey = hostApiKey;
-        OfframpWebHookV3Url = offrampWebHookV3Url;
-        UseSendCryptoCallbackVersion = useSendCryptoCallbackVersion;
-    }
-}
+        public string containerNode;
+        public string defaultAsset;
+        public string fiatCurrency;
+        public string fiatValue;
+        public string finalUrl;
+        public string hostApiKey;
+        public string hostAppName;
+        public string hostLogoUrl;
+        public string offrampAsset;
+        public string offrampWebhookV3Url;
+        public string selectedCountryCode;
+        public string swapAmount;
+        public string swapAsset;
+        public string url;
+        public string userAddress;
+        public string userEmailAddress;
+        public bool useSendCryptoCallbackVersion;
+        public string webhookStatusUrl;
 
+        public RampConfiguration(
+            string containerNode, string defaultAsset, string fiatCurrency,
+            string fiatValue, string finalUrl, string hostApiKey,
+            string hostAppName, string hostLogoUrl, string offrampAsset,
+            string offrampWebhookV3Url, string selectedCountryCode,
+            string swapAmount, string swapAsset, string url,
+            string userAddress, string userEmailAddress,
+            bool useSendCryptoCallbackVersion, string webhookStatusUrl
+        )
+        {
+            this.containerNode = containerNode;
+            this.defaultAsset = defaultAsset;
+            this.fiatCurrency = fiatCurrency;
+            this.fiatValue = fiatValue;
+            this.finalUrl = finalUrl;
+            this.hostApiKey = hostApiKey;
+            this.hostAppName = hostAppName;
+            this.hostLogoUrl = hostLogoUrl;
+            this.offrampAsset = offrampAsset;
+            this.offrampWebhookV3Url = offrampWebhookV3Url;
+            this.selectedCountryCode = selectedCountryCode;
+            this.swapAmount = swapAmount;
+            this.swapAsset = swapAsset;
+            this.url = url;
+            this.userAddress = userAddress;
+            this.userEmailAddress = userEmailAddress;
+            this.useSendCryptoCallbackVersion = useSendCryptoCallbackVersion;
+            this.webhookStatusUrl = webhookStatusUrl;
+        }
+    }
 }

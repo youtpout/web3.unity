@@ -4,10 +4,8 @@ apply plugin: 'com.android.library'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.github.RampNetwork:ramp-sdk-android:3.0.4'
-    **DEPS**
-}
-
+    api 'com.github.RampNetwork:ramp-sdk-android:3.0.4'
+**DEPS**}
 
 android {
     ndkPath "**NDKPATH**"
@@ -38,10 +36,8 @@ android {
     aaptOptions {
         noCompress = **BUILTIN_NOCOMPRESS** + unityStreamingAssets.tokenize(', ')
         ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~"
-    }
-    **PACKAGING_OPTIONS**
+    }**PACKAGING_OPTIONS**
 }
-
 **IL_CPP_BUILD_SETUP**
 **SOURCE_BUILD_SETUP**
 **EXTERNAL_SOURCES**
