@@ -4,23 +4,30 @@ namespace ChainSafe.Gaming.Exchangers
 {
     public class RampExchangerAndroid : RampExchanger
     {
-        private readonly AndroidJavaObject _pluginInstance;
         private readonly AndroidJavaObject _unityActivity;
         private readonly AndroidJavaClass _unityClass;
-
+        private readonly AndroidJavaObject _rampSDK;
+        private readonly RampCallback _rampCallback;
+        
         public RampExchangerAndroid(RampData rampData) : base(rampData)
         {
             _unityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            _rampSDK = new AndroidJavaObject("network.ramp.sdk.facade.RampSDK");
             _unityActivity = _unityClass.GetStatic<AndroidJavaObject>("currentActivity");
-            _pluginInstance = new AndroidJavaObject("io.chainsafe.web3.exchangers.ramp.RampPluginInstance");
-            _pluginInstance.CallStatic("setUnityActivity", _unityActivity);
-            _pluginInstance.CallStatic("setUnityImplementation", new RampUnityBridge());
+            _rampCallback = new RampCallback();
         }
 
         public override void OpenRamp()
         {
-            var flowClass = new AndroidJavaClass("network.ramp.sdk.facade.Flow");
-            var onrampFlow = flowClass.GetStatic<AndroidJavaObject>("ONRAMP");
+            AndroidJavaClass flowClass = new AndroidJavaClass("network.ramp.sdk.facade.Flow");
+            
+            AndroidJavaObject onrampFlow = flowClass.GetStatic<AndroidJavaObject>("ONRAMP");
+            AndroidJavaObject offrampFlow = flowClass.GetStatic<AndroidJavaObject>("OFFRAMP");
+            
+            AndroidJavaObject set = new AndroidJavaObject("java.util.HashSet");
+            set.Call<bool>("add", onrampFlow);
+            set.Call<bool>("add", offrampFlow);
+            
             var configObject = new AndroidJavaObject("network.ramp.sdk.facade.Config",
                 _rampData.HostAppName,
                 _rampData.HostLogoUrl,
@@ -37,44 +44,62 @@ namespace ChainSafe.Gaming.Exchangers
                 _rampData.WebhookStatusUrl,
                 _rampData.HostApiKey,
                 onrampFlow, // Assuming the default flow is ONRAMP
-                new AndroidJavaObject(
-                    "java.util.HashSet"), // Empty set for 'enabledFlows' for simplicity; adjust if needed
+                set , // Empty set for 'enabledFlows' for simplicity; adjust if needed
                 _rampData.OfframpWebHookV3Url,
                 null, // Assuming `UseSendCryptoCallbackVersion` is nullable bool
                 null);
-            _pluginInstance.Call("startRamp", configObject);
+            Debug.Log("Starting transactions");
+            
+            _unityActivity.Call("runOnUiThread", new AndroidJavaRunnable(() =>
+            {
+                _rampSDK.Call("startTransaction", _unityActivity, configObject,
+                    _rampCallback, string.Empty);
+            }));
         }
     }
 
-    public class RampUnityBridge : AndroidJavaProxy
+  
+    public class RampCallback : AndroidJavaProxy
     {
-        public RampUnityBridge() : base("io.chainsafe.web3.exchangers.ramp.RampUnityBridge")
+        public RampCallback() : base("network.ramp.sdk.facade.RampCallback") // Replace with the actual interface path
+        { }
+
+        public void onPurchaseFailed()
         {
+            Debug.Log("MainActivity: onPurchaseFailed");
         }
 
-        private void offrampSendCrypto(OfframpAssetInfo asset, string s, string s1)
+        public void onPurchaseCreated(AndroidJavaObject purchase, string purchaseViewToken, string apiUrl)
         {
-            Debug.LogError("OFF RAMP SENT CRYPTO");
+            Debug.Log("MainActivity: onPurchaseCreated");
         }
 
-        private void onOffRampSaleCreated(OffRampSaleData offrampSale, string s, string s1)
+        public void onWidgetClose()
         {
-            Debug.LogError("OFF RAMP SALE");
+            Debug.Log("MainActivity: onWidgetClose");
         }
 
-        private void onPurchaseCreated(OnRampPurchaseData purchase, string s, string s1)
+        public void offrampSendCrypto(AndroidJavaObject assetInfo, string amount, string address)
         {
-            Debug.LogError("OFF RAMP PURCHASE CREATED!!!!");
+            // Note: You might need to retrieve fields from `assetInfo` using assetInfo.Get<type>("fieldName") as necessary
+            Debug.Log($"MainActivity: offrampSendCrypto  assetInfo: {assetInfo} amount: {amount} address: {address}");
         }
 
-        private void onPurchaseFailed()
+        public void onOfframpSaleCreated(AndroidJavaObject sale, string saleViewToken, string apiUrl)
         {
-        }
+            // Example fields extracted from the sale object
+            string saleId = sale.Get<string>("id");
+            string saleCreatedAt = sale.Get<string>("createdAt");
+        
+            // Assuming `crypto` is an inner object in `sale` which contains `amount` and `assetInfo` fields
+            AndroidJavaObject crypto = sale.Get<AndroidJavaObject>("crypto");
+            string cryptoAmount = crypto.Get<string>("amount");
+            AndroidJavaObject cryptoAssetInfo = crypto.Get<AndroidJavaObject>("assetInfo");
 
-        private void onWidgetClose()
-        {
+            Debug.Log($"MainActivity: onOfframpSaleCreated {saleId} {saleCreatedAt} crypto: {cryptoAmount} {cryptoAssetInfo}");
         }
     }
+
 
 
     public class RampConfiguration
