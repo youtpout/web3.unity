@@ -2,9 +2,7 @@
 using System.Threading.Tasks;
 using ChainSafe.Gaming.Evm;
 using ChainSafe.Gaming.Evm.Contracts;
-using ChainSafe.Gaming.Web3.Core;
 using ChainSafe.Gaming.Web3.Core.Evm.EventPoller;
-using ChainSafe.Gaming.Web3.Core.Logout;
 using ChainSafe.Gaming.Web3.Environment;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,8 +23,7 @@ namespace ChainSafe.Gaming.Web3.Build
             serviceCollection
                 .UseEventPoller()
                 .AddSingleton<ChainRegistryProvider>()
-                .AddSingleton<IContractBuilder, ContractBuilder>()
-                .AddSingleton<ILogoutManager, LogoutManager>();
+                .AddSingleton<IContractBuilder, ContractBuilder>();
         }
 
         /// <summary>

@@ -68,6 +68,9 @@ namespace ChainSafe.Gaming.MetaMask
         /// Lifetime event method, called during "Web3.TerminateAsync".
         /// </summary>
         /// <returns>async awaitable task.</returns>
-        public ValueTask WillStopAsync() => new(Task.CompletedTask);
+        public async ValueTask WillStopAsync()
+        {
+            await walletProvider.Disconnect();
+        }
     }
 }

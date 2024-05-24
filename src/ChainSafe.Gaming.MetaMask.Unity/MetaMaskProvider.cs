@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using ChainSafe.Gaming.Evm;
 using ChainSafe.Gaming.Web3;
 using ChainSafe.Gaming.Web3.Analytics;
-using ChainSafe.Gaming.Web3.Core.Logout;
 using ChainSafe.Gaming.Web3.Environment;
 using ChainSafe.Gaming.Web3.Evm.Wallet;
 using UnityEngine;
@@ -11,9 +10,9 @@ using Object = UnityEngine.Object;
 namespace ChainSafe.Gaming.MetaMask.Unity
 {
     /// <summary>
-    /// Concrete implementation of <see cref="IMetaMaskProvider"/>.
+    /// Concrete implementation of <see cref="IWalletProvider"/>.
     /// </summary>
-    public class MetaMaskProvider : WalletProvider, ILogoutHandler
+    public class MetaMaskProvider : WalletProvider
     {
         private readonly ILogWriter logWriter;
 
@@ -63,7 +62,8 @@ namespace ChainSafe.Gaming.MetaMask.Unity
 
         public override Task Disconnect()
         {
-            // Currently no disconnect logic for MetaMask lib on NEthereum.
+            Object.Destroy(metaMaskController.gameObject);
+
             return Task.CompletedTask;
         }
 
@@ -93,13 +93,6 @@ namespace ChainSafe.Gaming.MetaMask.Unity
             });
 
             return await metaMaskController.Connect();
-        }
-
-        public Task OnLogout()
-        {
-            Object.Destroy(metaMaskController.gameObject);
-
-            return Task.CompletedTask;
         }
     }
 }

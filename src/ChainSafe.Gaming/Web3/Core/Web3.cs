@@ -6,7 +6,6 @@ using ChainSafe.Gaming.Evm.Providers;
 using ChainSafe.Gaming.Evm.Signers;
 using ChainSafe.Gaming.Web3.Core;
 using ChainSafe.Gaming.Web3.Core.Evm;
-using ChainSafe.Gaming.Web3.Core.Logout;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ChainSafe.Gaming.Web3
@@ -22,7 +21,6 @@ namespace ChainSafe.Gaming.Web3
         private readonly ISigner? signer;
         private readonly ITransactionExecutor? transactionExecutor;
         private readonly IEvmEvents? events;
-        private readonly ILogoutManager logoutManager;
 
         private bool initialized;
         private bool terminated;
@@ -37,7 +35,6 @@ namespace ChainSafe.Gaming.Web3
             ContractBuilder = serviceProvider.GetRequiredService<IContractBuilder>();
             ProjectConfig = serviceProvider.GetRequiredService<IProjectConfig>();
             ChainConfig = serviceProvider.GetRequiredService<IChainConfig>();
-            logoutManager = this.serviceProvider.GetRequiredService<ILogoutManager>();
         }
 
         /// <summary>
@@ -102,16 +99,11 @@ namespace ChainSafe.Gaming.Web3
         /// </summary>
         /// <exception cref="Web3Exception">Web3 was already terminated.</exception>
         /// <returns>Task handle for the asynchronous process.</returns>
-        public async ValueTask TerminateAsync(bool logout = false)
+        public async ValueTask TerminateAsync()
         {
             if (terminated)
             {
                 throw new Web3Exception("Web3 was already terminated.");
-            }
-
-            if (logout)
-            {
-                await logoutManager.Logout();
             }
 
             if (initialized)
