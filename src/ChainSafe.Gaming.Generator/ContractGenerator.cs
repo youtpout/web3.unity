@@ -56,21 +56,21 @@ namespace ChainSafe.Gaming
         private static string GenerateFunction(Nethereum.ABI.Model.FunctionABI functionAbi)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append($"        public ");
+            sb.Append($"        public async ");
             if (functionAbi.OutputParameters?.Length > 0)
             {
                 // if we have output parameter we return the first
                 foreach (var outputParameter in functionAbi.OutputParameters)
                 {
                     // todo support multiple output
-                    sb.Append($"{outputParameter.Type.ToString()}");
+                    sb.Append($"Task<{outputParameter.Type.ToString()}>");
                     break;
                 }
             }
             else
             {
                 // if we have don't output parameter we return object array
-                sb.Append("object[]");
+                sb.Append("Task<object[]>");
             }
             sb.Append($" {functionAbi.Name}(");
             if (functionAbi.InputParameters.Length > 0)
@@ -84,12 +84,12 @@ namespace ChainSafe.Gaming
 
             if (functionAbi.Constant)
             {
-                sb.Append($"object[] response = this.Contract.Call(\"{functionAbi.Name}\"");
+                sb.Append($"object[] response = await this.Contract.Call(\"{functionAbi.Name}\"");
 
             }
             else
             {
-                sb.Append($"object[] response = this.Contract.Send(\"{functionAbi.Name}\"");
+                sb.Append($"object[] response = await this.Contract.Send(\"{functionAbi.Name}\"");
             }
 
             if (functionAbi.InputParameters.Length > 0)
@@ -110,6 +110,7 @@ namespace ChainSafe.Gaming
                 sb.Append($"return response;");
             }
             sb.Append($"        }}");
+            sb.AppendLine();
             return sb.ToString();
         }
     }
