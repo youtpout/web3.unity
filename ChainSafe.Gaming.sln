@@ -14,38 +14,40 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3F500611-617F-413F-8607-2393B7493585}"
 	ProjectSection(SolutionItems) = preProject
 		global.ruleset = global.ruleset
-		README.md = README.md
-		Modules.md = Modules.md
 		LICENSE = LICENSE
+		Modules.md = Modules.md
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChainSafe.Gaming.Unity.ThirdParty", "src\ChainSafe.Gaming.Unity.ThirdParty\ChainSafe.Gaming.Unity.ThirdParty.csproj", "{9EC71CB4-9401-4E02-AC63-FC13B3D1AA53}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChainSafe.Gaming.WalletConnect", "src\ChainSafe.Gaming.WalletConnect\ChainSafe.Gaming.WalletConnect.csproj", "{99E7A645-CAC5-441B-848D-1253405D6400}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChainSafe.Gaming.InProcessSigner", "src\ChainSafe.Gaming.InProcessSigner\ChainSafe.Gaming.InProcessSigner.csproj", "{3C01FD36-4D44-4886-A971-4786D99CBFCC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChainSafe.Gaming.InProcessSigner", "src\ChainSafe.Gaming.InProcessSigner\ChainSafe.Gaming.InProcessSigner.csproj", "{3C01FD36-4D44-4886-A971-4786D99CBFCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChainSafe.Gaming.InProcessTransactionExecutor", "src\ChainSafe.Gaming.InProcessTransactionExecutor\ChainSafe.Gaming.InProcessTransactionExecutor.csproj", "{457E4582-4CC5-4D42-A0CB-5F48204328FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChainSafe.Gaming.InProcessTransactionExecutor", "src\ChainSafe.Gaming.InProcessTransactionExecutor\ChainSafe.Gaming.InProcessTransactionExecutor.csproj", "{457E4582-4CC5-4D42-A0CB-5F48204328FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChainSafe.Gaming.Gelato", "src\ChainSafe.Gaming.Gelato\ChainSafe.Gaming.Gelato.csproj", "{205BA2B5-B8B0-4860-B8D0-1AFA148D882E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChainSafe.Gaming.Gelato", "src\ChainSafe.Gaming.Gelato\ChainSafe.Gaming.Gelato.csproj", "{205BA2B5-B8B0-4860-B8D0-1AFA148D882E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChainSafe.Gaming.Lootboxes.Chainlink", "src\ChainSafe.Gaming.Lootboxes.Chainlink\ChainSafe.Gaming.Lootboxes.Chainlink.csproj", "{2A1E49E1-219A-4821-B580-CF6E85A5EA20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChainSafe.Gaming.Lootboxes.Chainlink", "src\ChainSafe.Gaming.Lootboxes.Chainlink\ChainSafe.Gaming.Lootboxes.Chainlink.csproj", "{2A1E49E1-219A-4821-B580-CF6E85A5EA20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chainsafe.Gaming.Chainlink", "src\Chainsafe.Gaming.Chainlink\Chainsafe.Gaming.Chainlink.csproj", "{A8A29975-3146-445E-87F6-7B2447C39760}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chainsafe.Gaming.Chainlink", "src\Chainsafe.Gaming.Chainlink\Chainsafe.Gaming.Chainlink.csproj", "{A8A29975-3146-445E-87F6-7B2447C39760}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChainSafe.Gaming.Debugging", "src\ChainSafe.Gaming.Debugging\ChainSafe.Gaming.Debugging.csproj", "{88B2E2F4-96BC-44B1-AE4D-5FBA6B4C399F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChainSafe.Gaming.Debugging", "src\ChainSafe.Gaming.Debugging\ChainSafe.Gaming.Debugging.csproj", "{88B2E2F4-96BC-44B1-AE4D-5FBA6B4C399F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChainSafe.Gaming.MetaMask", "src\ChainSafe.Gaming.MetaMask\ChainSafe.Gaming.MetaMask.csproj", "{0631D9F5-2942-4ECE-A0B5-7C3AF54E87AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChainSafe.Gaming.MetaMask", "src\ChainSafe.Gaming.MetaMask\ChainSafe.Gaming.MetaMask.csproj", "{0631D9F5-2942-4ECE-A0B5-7C3AF54E87AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChainSafe.Gaming.MetaMask.Unity", "src\ChainSafe.Gaming.MetaMask.Unity\ChainSafe.Gaming.MetaMask.Unity.csproj", "{AF45F008-6ABC-4F37-82BF-4814B7F15B30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChainSafe.Gaming.MetaMask.Unity", "src\ChainSafe.Gaming.MetaMask.Unity\ChainSafe.Gaming.MetaMask.Unity.csproj", "{AF45F008-6ABC-4F37-82BF-4814B7F15B30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChainSafe.Gaming.SygmaClient", "src\ChainSafe.Gaming.SygmaClient\ChainSafe.Gaming.SygmaClient.csproj", "{6D329479-C391-4BF9-B6FC-FFA3AD3A12D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChainSafe.Gaming.SygmaClient", "src\ChainSafe.Gaming.SygmaClient\ChainSafe.Gaming.SygmaClient.csproj", "{6D329479-C391-4BF9-B6FC-FFA3AD3A12D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChainSafe.Gaming.Marketplace", "src/ChainSafe.Gaming.Marketplace\ChainSafe.Gaming.Marketplace.csproj", "{E7A9FE35-BEFD-4569-B848-495E0B85B674}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChainSafe.Gaming.Marketplace", "src\ChainSafe.Gaming.Marketplace\ChainSafe.Gaming.Marketplace.csproj", "{E7A9FE35-BEFD-4569-B848-495E0B85B674}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChainSafe.Gaming.InProcessTransactionExecutor.Unity", "src\ChainSafe.Gaming.InProcessTransactionExecutor.Unity\ChainSafe.Gaming.InProcessTransactionExecutor.Unity.csproj", "{46C16E64-DC72-446D-B153-A2142691A151}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChainSafe.Gaming.InProcessTransactionExecutor.Unity", "src\ChainSafe.Gaming.InProcessTransactionExecutor.Unity\ChainSafe.Gaming.InProcessTransactionExecutor.Unity.csproj", "{46C16E64-DC72-446D-B153-A2142691A151}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChainSafe.Gaming.HyperPlay", "src\ChainSafe.Gaming.HyperPlay\ChainSafe.Gaming.HyperPlay.csproj", "{0859E3E2-5AB9-4997-9DE7-368EAB89313B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChainSafe.Gaming.Generator", "src\ChainSafe.Gaming.Generator\ChainSafe.Gaming.Generator.csproj", "{F03AA58B-4325-4C8B-ACCA-BC2CF46D79F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -159,15 +161,19 @@ Global
 		{0859E3E2-5AB9-4997-9DE7-368EAB89313B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0859E3E2-5AB9-4997-9DE7-368EAB89313B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0859E3E2-5AB9-4997-9DE7-368EAB89313B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0859E3E2-5AB9-4997-9DE7-368EAB89313B}.Test|Any CPU.ActiveCfg = Debug|Any CPU
-		{0859E3E2-5AB9-4997-9DE7-368EAB89313B}.Test|Any CPU.Build.0 = Debug|Any CPU
+		{0859E3E2-5AB9-4997-9DE7-368EAB89313B}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{0859E3E2-5AB9-4997-9DE7-368EAB89313B}.Test|Any CPU.Build.0 = Test|Any CPU
+		{F03AA58B-4325-4C8B-ACCA-BC2CF46D79F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F03AA58B-4325-4C8B-ACCA-BC2CF46D79F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F03AA58B-4325-4C8B-ACCA-BC2CF46D79F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F03AA58B-4325-4C8B-ACCA-BC2CF46D79F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F03AA58B-4325-4C8B-ACCA-BC2CF46D79F1}.Test|Any CPU.ActiveCfg = Debug|Any CPU
+		{F03AA58B-4325-4C8B-ACCA-BC2CF46D79F1}.Test|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DB0D5856-6403-4C0C-8095-9A328B81C86F}
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
 EndGlobal
