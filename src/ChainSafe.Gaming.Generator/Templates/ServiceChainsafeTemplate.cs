@@ -35,4 +35,4 @@ namespace ChainSafe.Gaming.Generator.Templates
         }
     }
 }
-}
+
