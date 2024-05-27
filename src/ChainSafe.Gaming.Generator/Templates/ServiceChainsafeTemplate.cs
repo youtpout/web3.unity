@@ -24,9 +24,9 @@ namespace ChainSafe.Gaming.Generator.Templates
         public override string GenerateClass()
         {
             return
-               $@"{SpaceUtils.OneTab}public partial class {Model.GetTypeName()}: ContractWeb3ServiceBase
+               $@"{SpaceUtils.OneTab}public partial class {Model.GetTypeName()}: ContractGenerator
 {SpaceUtils.OneTab}{{
-{SpaceUtils.TwoTabs}public {Model.GetTypeName()}(Nethereum.Web3.IWeb3 web3, string contractAddress) : base(web3, contractAddress)
+{SpaceUtils.TwoTabs}public {Model.GetTypeName()}(string abi, string address, IRpcProvider provider, ISigner signer = null, ITransactionExecutor transactionExecutor = null, IAnalyticsClient analyticsClient = null) : base(abi, address, provider, signer, transactionExecutor, analyticsClient)
 {SpaceUtils.TwoTabs}{{
 {SpaceUtils.TwoTabs}}}
 {SpaceUtils.NoTabs}
