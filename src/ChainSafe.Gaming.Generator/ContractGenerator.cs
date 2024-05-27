@@ -80,16 +80,17 @@ namespace ChainSafe.Gaming
                 sb.Append($"{string.Join(",", inputs)}");
             }
             sb.Append($")");
+            sb.AppendLine();
             sb.AppendLine($"        {{");
 
             if (functionAbi.Constant)
             {
-                sb.Append($"object[] response = await this.Contract.Call(\"{functionAbi.Name}\"");
+                sb.Append($"            object[] response = await this.Contract.Call(\"{functionAbi.Name}\"");
 
             }
             else
             {
-                sb.Append($"object[] response = await this.Contract.Send(\"{functionAbi.Name}\"");
+                sb.Append($"            object[] response = await this.Contract.Send(\"{functionAbi.Name}\"");
             }
 
             if (functionAbi.InputParameters.Length > 0)
@@ -103,12 +104,13 @@ namespace ChainSafe.Gaming
             if (functionAbi.OutputParameters?.Length > 0)
             {
                 // todo support multiple output
-                sb.Append($"return response[0] as {functionAbi.OutputParameters[0].Type.ToString()};");
+                sb.Append($"            return response[0] as {functionAbi.OutputParameters[0].Type.ToString()};");
             }
             else
             {
-                sb.Append($"return response;");
+                sb.Append($"            return response;");
             }
+            sb.AppendLine();
             sb.Append($"        }}");
             sb.AppendLine();
             return sb.ToString();

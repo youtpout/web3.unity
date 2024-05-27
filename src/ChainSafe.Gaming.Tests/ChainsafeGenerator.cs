@@ -18,7 +18,19 @@ namespace ChainSafe.Gaming.Tests
     [TestFixture]
     public class ChainsafeGenerator
     {
-        private readonly string nft721ABI = File.ReadAllText(Directory.GetCurrentDirectory() + "../../../../Resources/Erc721.abi.json");
+        private readonly string erc20ABI = File.ReadAllText(Directory.GetCurrentDirectory() + "../../../../Resources/Erc20.abi.json");
+
+        [OneTimeSetUp]
+        public void StartTest()
+        {
+            Trace.Listeners.Add(new ConsoleTraceListener());
+        }
+
+        [OneTimeTearDown]
+        public void EndTest()
+        {
+            Trace.Flush();
+        }
 
         // Various unit tests for ChainSafe.Gaming Web3 library methods
 
@@ -28,7 +40,8 @@ namespace ChainSafe.Gaming.Tests
         [Test]
         public void GenerateClass()
         {
-            var generated = ContractGenerator.Generate(nft721ABI, "NFTContract");
+            var generated = ContractGenerator.Generate(erc20ABI, "TokenContract");
+            Debug.WriteLine(generated);
             Assert.IsNotEmpty(generated);
         }
     }
