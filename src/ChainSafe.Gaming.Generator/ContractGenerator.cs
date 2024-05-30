@@ -27,8 +27,7 @@ namespace ChainSafe.Gaming.Generator
 
         private static string GenerateClass(Nethereum.ABI.Model.ContractABI contractAbi, string contractName)
         {
-            return $@"
-#pragma warning disable
+            return $@"#pragma warning disable
 using System.Numerics;
 using System.Threading.Tasks;
 using ChainSafe.Gaming.Evm.Providers;
@@ -61,8 +60,6 @@ namespace ChainSafe.Gaming
                 {
                     sb.AppendLine(GenerateFunction(function));
                 }
-
-                sb.AppendLine();
             }
 
             return sb.ToString();

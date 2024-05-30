@@ -73,7 +73,5 @@ namespace ChainSafe.Gaming
             return (BigInteger)response[0];
         }
 
-
     }
 }
-
