@@ -25,6 +25,7 @@
     <assembly fullname="ChainSafe.Gaming.Gelato"/>
     <assembly fullname="ChainSafe.Gaming.ChainLink"/>
     <assembly fullname="ChainSafe.Gaming.LootBoxes.Chainlink"/>
+	<assembly fullname="ChainSafe.Gaming.Generator"/>
     <!-- Dependencies -->
     <assembly fullname="ADRaffy.ENSNormalize" />
     <assembly fullname="BouncyCastle.Crypto" preserve="all"/>
