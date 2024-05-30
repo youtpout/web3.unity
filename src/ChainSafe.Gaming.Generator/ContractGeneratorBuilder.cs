@@ -1,11 +1,11 @@
-﻿namespace ChainSafe.Gaming.Generator
-{
-    using System;
-    using ChainSafe.Gaming.Evm.Providers;
-    using ChainSafe.Gaming.Evm.Signers;
-    using ChainSafe.Gaming.Web3.Analytics;
-    using ChainSafe.Gaming.Web3.Core.Evm;
+﻿using System;
+using ChainSafe.Gaming.Evm.Providers;
+using ChainSafe.Gaming.Evm.Signers;
+using ChainSafe.Gaming.Web3.Analytics;
+using ChainSafe.Gaming.Web3.Core.Evm;
 
+namespace ChainSafe.Gaming.Generator
+{
     public class ContractGeneratorBuilder : IContractGeneratorBuilder
     {
         private readonly IRpcProvider rpcProvider;
