@@ -1,14 +1,25 @@
 ﻿using Nethereum.ABI.ABIDeserialisation;
+using Nethereum.ABI.Model;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace ChainSafe.Gaming.Generator
 {
-    public class ContractGenerator
+    /// <summary>
+    /// Helper to convert solidity abi to c# class.
+    /// </summary>
+    public static class ContractGenerator
     {
-        public static object SpaceUtils { get; private set; }
 
-        public static string Generate(string abi, string contractName)
+        /// <summary>
+        /// Gerate a c# class from abi to facilitate smartcontracts call.
+        /// </summary>
+        /// <param name="abi">the json abi.</param>
+        /// <param name="contractName">the contract name.</param>
+        /// <returns>the c# class in string format.</returns>
+        public static string Generate(this string abi, string contractName)
         {
             var contractAbi = ABIDeserialiserFactory.DeserialiseContractABI(abi);
             return GenerateClass(contractAbi, contractName);
@@ -16,105 +27,121 @@ namespace ChainSafe.Gaming.Generator
 
         private static string GenerateClass(Nethereum.ABI.Model.ContractABI contractAbi, string contractName)
         {
-            return
-                           $@"using ChainSafe.Gaming.Evm.Providers;
+            return $@"
+#pragma warning disable
+using System.Numerics;
+using System.Threading.Tasks;
+using ChainSafe.Gaming.Evm.Providers;
 using ChainSafe.Gaming.Evm.Signers;
 using ChainSafe.Gaming.Web3.Analytics;
 using ChainSafe.Gaming.Web3.Core.Evm;
-using System.Numerics;
-using System.Threading.Tasks;
 
 namespace ChainSafe.Gaming
 {{
+
+    /// <summary>
+    /// Generated with chainsafe contract generator.
+    /// </summary>
     public partial class {contractName}: GeneratedContract
     {{
         public {contractName}(string abi, string address, IRpcProvider provider, ISigner signer = null, ITransactionExecutor transactionExecutor = null, IAnalyticsClient analyticsClient = null) : base(abi, address, provider, signer, transactionExecutor, analyticsClient)
         {{
         }}
-
 {GenerateMethods(contractAbi.Functions)}
     }}
 }}";
         }
 
-        private static string GenerateMethods(Nethereum.ABI.Model.FunctionABI[] functionsList)
+        private static string GenerateMethods(FunctionABI[] functionsList)
         {
             StringBuilder sb = new StringBuilder();
             if (functionsList?.Length > 0)
             {
-
                 foreach (var function in functionsList)
                 {
                     sb.AppendLine(GenerateFunction(function));
                 }
+
                 sb.AppendLine();
             }
+
             return sb.ToString();
         }
 
 
-        private static string GenerateFunction(Nethereum.ABI.Model.FunctionABI functionAbi)
+        private static string GenerateFunction(FunctionABI functionAbi)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append($"        public async ");
-            if (functionAbi.OutputParameters?.Length > 0)
+            CultureInfo cultureInfo = new CultureInfo("en-US", false);
+            TextInfo textInfo = cultureInfo.TextInfo;
+            return $@"
+        public async {GetFunctionReturnType(functionAbi)} {textInfo.ToTitleCase(functionAbi.Name)}({GetFunctionParameters(functionAbi)}) 
+        {{
+            {GetFunctionCall(functionAbi)}
+            {GetFunctionCallReturnType(functionAbi)} 
+        }}";
+        }
+
+        private static string GetFunctionReturnType(FunctionABI functionAbi)
+        {
+            if (functionAbi.OutputParameters?.Length == 1)
             {
-                // if we have output parameter we return the first
-                foreach (var outputParameter in functionAbi.OutputParameters)
-                {
-                    // todo support multiple output
-                    sb.Append($"Task<{outputParameter.Type.ToString()}>");
-                    break;
-                }
+                // if we have one output parameter we return the corespondant type
+                var outputParameter = functionAbi.OutputParameters[0];
+                return $"Task<{outputParameter.Type.Convert()}>";
             }
             else
             {
-                // if we have don't output parameter we return object array
-                sb.Append("Task<object[]>");
+                // return default type if we don't have only one return type
+                return "Task<object[]>";
             }
-            sb.Append($" {functionAbi.Name}(");
+        }
+
+        private static string GetFunctionParameters(FunctionABI functionAbi)
+        {
             if (functionAbi.InputParameters.Length > 0)
             {
                 // support type
-                var inputs = functionAbi.InputParameters.Select(x => $"string {x.Name}");
-                sb.Append($"{string.Join(",", inputs)}");
+                var inputs = functionAbi.InputParameters.Select(x => $"{x.Type.Convert()} {x.Name}");
+                return $"{string.Join(", ", inputs)}";
             }
-            sb.Append($")");
-            sb.AppendLine();
-            sb.AppendLine($"        {{");
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        private static string GetFunctionCall(FunctionABI functionAbi)
+        {
+            var inputText = string.Empty;
+            if (functionAbi.InputParameters?.Length > 0)
+            {
+                var inputs = functionAbi.InputParameters.Select(x => $"{x.Name}");
+                inputText = string.Join(", ", inputs);
+            }
 
             if (functionAbi.Constant)
             {
-                sb.Append($"            object[] response = await this.Contract.Call(\"{functionAbi.Name}\"");
-
+                return $"object[] response = await this.Contract.Call(\"{functionAbi.Name}\", new object[] {{{inputText}}});";
             }
             else
             {
-                sb.Append($"            object[] response = await this.Contract.Send(\"{functionAbi.Name}\"");
+                return $"object[] response = await this.Contract.Send(\"{functionAbi.Name}\", new object[] {{{inputText}}});";
             }
+        }
 
-            if (functionAbi.InputParameters.Length > 0)
+        private static string GetFunctionCallReturnType(FunctionABI functionAbi)
+        {
+            if (functionAbi.OutputParameters?.Length == 1)
             {
-                // generate the Object[] parameter
-                var inputs = functionAbi.InputParameters.Select(x => x.Name);
-                sb.Append($", new Object[] {{{string.Join(",", inputs)}}}");
-            }
-            sb.Append(");");
-            sb.AppendLine();
-            if (functionAbi.OutputParameters?.Length > 0)
-            {
-                // todo support multiple output
-                sb.Append($"            return response[0] as {functionAbi.OutputParameters[0].Type.ToString()};");
+                // if we have one output parameter we return the corespondant type
+                var outputParameter = functionAbi.OutputParameters[0];
+                return $"return ({outputParameter.Type.Convert()})response[0];";
             }
             else
             {
-                sb.Append($"            return response;");
+                // return default type if we don't have only one return type
+                return "return response;";
             }
-            sb.AppendLine();
-            sb.Append($"        }}");
-            sb.AppendLine();
-            return sb.ToString();
         }
     }
-
 }

@@ -35,10 +35,10 @@ namespace ChainSafe.Gaming.Tests
         // Various unit tests for ChainSafe.Gaming Web3 library methods
 
         /// <summary>
-        /// Test method to get the network information.
+        /// Test method to generate c# class from abi.
         /// </summary>
         [Test]
-        public void GenerateClass()
+        public void TestGenerateClass()
         {
             var generated = ContractGenerator.Generate(erc20ABI, "TokenContract");
             Debug.WriteLine(generated);
