@@ -1,9 +1,10 @@
 using UnityEngine;
 using UnityEditor;
 using System.Text.RegularExpressions;
-using ChainSafe.Gaming.Generators;
+using ChainSafe.Gaming.Generator;
+using System.IO;
 
-public class ContractGenerator : EditorWindow
+public class ContractGeneratorEditor : EditorWindow
 {
     static string path = "Assets/Scripts/Contracts/";
     static string contractName = "ExempleContract";
@@ -12,7 +13,7 @@ public class ContractGenerator : EditorWindow
     [MenuItem("ChainSafe SDK/Generate Contracts Classes")]
     public static void GenerateContract()
     {
-        ContractGenerator window = CreateInstance<ContractGenerator>();
+        ContractGeneratorEditor window = CreateInstance<ContractGeneratorEditor>();
         window.position = new Rect(Screen.width / 2, Screen.height / 2, 640, 300);
         window.ShowUtility();
     }
@@ -27,13 +28,13 @@ public class ContractGenerator : EditorWindow
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Save"))
         {
-            var result = ContractGenerator.GenerateContract(abi, contractName);
+            var result = ContractGenerator.Generate(abi, contractName);
 
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
-            var filePath = $"{Path.Combine(path, item.FileName)}";
+            var filePath = $"{Path.Combine(path, $"{contractName}.cs")}";
             File.WriteAllText(filePath, result);
             Debug.Log($"File generated : {filePath}");
 
